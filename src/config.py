@@ -7,6 +7,8 @@ class Settings(BaseSettings):
 
     openai_api_key: str | None = Field(default=None, alias="OPENAI_API_KEY")
     anthropic_api_key: str | None = Field(default=None, alias="ANTHROPIC_API_KEY")
+    nim_api_key: str | None = Field(default=None, alias="NIM_API_KEY")
+    nim_base_url: str = Field(default="https://integrate.api.nvidia.com/v1", alias="NIM_BASE_URL")
 
     database_url: str = Field(default="sqlite:///./compliance_ai.db", alias="DATABASE_URL")
 
@@ -37,8 +39,8 @@ class Settings(BaseSettings):
     enable_vector_search: bool = Field(default=True, alias="ENABLE_VECTOR_SEARCH")
     enable_graph_search: bool = Field(default=True, alias="ENABLE_GRAPH_SEARCH")
 
-    mapping_provider: str = Field(default="anthropic", alias="MAPPING_PROVIDER")
-    mapping_model: str | None = Field(default=None, alias="MAPPING_MODEL")
+    mapping_provider: str = Field(default="nvidia_nim", alias="MAPPING_PROVIDER")
+    mapping_model: str | None = Field(default="meta/llama-3.1-8b-instruct", alias="MAPPING_MODEL")
 
     @property
     def sqlalchemy_database_url(self) -> str:

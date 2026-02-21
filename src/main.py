@@ -209,9 +209,19 @@ def _execute_mapping_job(obligation_ids: list[int], policy_db_ids: list[int]) ->
             for p in policies
         ]
 
-        api_key = settings.anthropic_api_key if settings.mapping_provider == "anthropic" else settings.openai_api_key
+        provider_api_keys = {
+            "anthropic": settings.anthropic_api_key,
+            "openai": settings.openai_api_key,
+            "nvidia_nim": settings.nim_api_key,
+        }
+        api_key = provider_api_keys.get(settings.mapping_provider)
 
-        agent = PolicyMappingAgent(api_key=api_key, provider=settings.mapping_provider, model=settings.mapping_model)
+        agent = PolicyMappingAgent(
+            api_key=api_key,
+            provider=settings.mapping_provider,
+            model=settings.mapping_model,
+            nim_base_url=settings.nim_base_url,
+        )
         mappings = asyncio.run(agent.batch_map_obligations(obligation_payload, policy_payload))
 
         graph = get_knowledge_graph()

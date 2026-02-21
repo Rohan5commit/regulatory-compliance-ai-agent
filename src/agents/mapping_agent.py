@@ -33,7 +33,13 @@ Respond with strict JSON:
 }}
 """
 
-    def __init__(self, api_key: str | None = None, provider: str = "anthropic", model: str | None = None):
+    def __init__(
+        self,
+        api_key: str | None = None,
+        provider: str = "nvidia_nim",
+        model: str | None = None,
+        nim_base_url: str = "https://integrate.api.nvidia.com/v1",
+    ):
         self.provider = provider
         self.api_key = api_key
         self.model = model
@@ -50,6 +56,11 @@ Respond with strict JSON:
 
             self.openai_client = AsyncOpenAI(api_key=api_key)
             self.model = model or "gpt-4o-mini"
+        elif provider == "nvidia_nim":
+            from openai import AsyncOpenAI
+
+            self.openai_client = AsyncOpenAI(api_key=api_key, base_url=nim_base_url.rstrip("/"))
+            self.model = model or "meta/llama-3.1-8b-instruct"
         elif provider == "anthropic":
             from anthropic import AsyncAnthropic
 
@@ -110,7 +121,7 @@ Respond with strict JSON:
         return filtered
 
     async def _call_llm(self, prompt: str) -> str:
-        if self.provider == "openai" and self.openai_client:
+        if self.provider in {"openai", "nvidia_nim"} and self.openai_client:
             response = await self.openai_client.chat.completions.create(
                 model=self.model,
                 messages=[{"role": "user", "content": prompt}],

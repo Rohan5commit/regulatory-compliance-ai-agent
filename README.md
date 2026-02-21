@@ -6,7 +6,7 @@ Autonomous AI system for monitoring financial regulations, extracting compliance
 
 - Regulatory horizon scanning (SEC implemented, FINRA/MAS/FCA/ECB templates included)
 - NLP obligation extraction with rule-based + model-assisted logic
-- Policy mapping agent with optional OpenAI/Anthropic calls and free heuristic fallback
+- Policy mapping agent with NVIDIA NIM support (default), plus OpenAI/Anthropic and free heuristic fallback
 - Hybrid retrieval foundation (vector store via Qdrant + graph via Neo4j)
 - Compliance gap discovery and dashboard-friendly API
 - Celery orchestration for recurring scanning/processing jobs
@@ -21,7 +21,7 @@ cd regulatory-compliance-ai-agent
 cp .env.example .env
 ```
 
-Leave API keys blank to run in free heuristic mode.
+You can leave API keys blank to run in free heuristic mode.
 
 ### 2) Start Infrastructure
 
@@ -52,10 +52,24 @@ API docs: http://localhost:8000/docs
 
 ## API Keys (Optional)
 
+- NVIDIA NIM (recommended free starting point): https://build.nvidia.com/
 - OpenAI: https://platform.openai.com/api-keys
 - Anthropic: https://console.anthropic.com/settings/keys
 
-If keys are not set, policy mapping uses a built-in heuristic evaluator.
+Default mapping provider is `nvidia_nim` with model `meta/llama-3.1-8b-instruct`.
+
+## Mapping Provider Options
+
+Set these in `.env`:
+
+```bash
+MAPPING_PROVIDER=nvidia_nim   # options: nvidia_nim | openai | anthropic
+MAPPING_MODEL=meta/llama-3.1-8b-instruct
+NIM_API_KEY=...
+NIM_BASE_URL=https://integrate.api.nvidia.com/v1
+```
+
+If no API key is present for the selected provider, policy mapping automatically falls back to heuristic scoring.
 
 ## Core Endpoints
 
