@@ -51,23 +51,33 @@ Respond with strict JSON:
             logger.info("No API key provided. Mapping agent will use heuristic mode.")
             return
 
-        if provider == "openai":
-            from openai import AsyncOpenAI
+        try:
+            if provider == "openai":
+                from openai import AsyncOpenAI
 
-            self.openai_client = AsyncOpenAI(api_key=api_key)
-            self.model = model or "gpt-4o-mini"
-        elif provider == "nvidia_nim":
-            from openai import AsyncOpenAI
+                self.openai_client = AsyncOpenAI(api_key=api_key)
+                self.model = model or "gpt-4o-mini"
+            elif provider == "nvidia_nim":
+                from openai import AsyncOpenAI
 
-            self.openai_client = AsyncOpenAI(api_key=api_key, base_url=nim_base_url.rstrip("/"))
-            self.model = model or "meta/llama-3.1-8b-instruct"
-        elif provider == "anthropic":
-            from anthropic import AsyncAnthropic
+                self.openai_client = AsyncOpenAI(api_key=api_key, base_url=nim_base_url.rstrip("/"))
+                self.model = model or "meta/llama-3.1-8b-instruct"
+            elif provider == "anthropic":
+                from anthropic import AsyncAnthropic
 
-            self.anthropic_client = AsyncAnthropic(api_key=api_key)
-            self.model = model or "claude-3-5-sonnet-20241022"
-        else:
-            raise ValueError(f"Unsupported provider: {provider}")
+                self.anthropic_client = AsyncAnthropic(api_key=api_key)
+                self.model = model or "claude-3-5-sonnet-20241022"
+            else:
+                raise ValueError(f"Unsupported provider: {provider}")
+        except Exception as exc:
+            logger.warning(
+                "LLM client initialization failed for provider {}: {}. Falling back to heuristic mode.",
+                provider,
+                exc,
+            )
+            self.api_key = None
+            self.openai_client = None
+            self.anthropic_client = None
 
     async def map_obligation_to_policy(self, obligation: dict[str, Any], policy: dict[str, Any]) -> dict[str, Any]:
         if not self.api_key:
