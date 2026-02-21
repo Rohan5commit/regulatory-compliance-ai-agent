@@ -1,0 +1,57 @@
+# Core Framework
+fastapi==0.115.0
+uvicorn[standard]==0.32.0
+pydantic==2.9.2
+pydantic-settings==2.5.2
+celery[redis]==5.4.0
+redis==5.1.1
+
+# Database
+psycopg2-binary==2.9.9
+sqlalchemy==2.0.35
+neo4j==5.24.0
+chromadb==0.5.11
+qdrant-client==1.12.0
+
+# LLM and AI
+openai==1.54.3
+anthropic==0.39.0
+langchain==0.3.7
+langchain-community==0.3.5
+langchain-openai==0.2.5
+transformers==4.46.2
+sentence-transformers==3.2.0
+torch==2.5.1
+
+# NLP
+spacy==3.8.2
+
+# Web Scraping & Monitoring
+beautifulsoup4==4.12.3
+selenium==4.26.1
+feedparser==6.0.11
+requests==2.32.3
+httpx==0.27.2
+
+# Document Processing
+pypdf2==3.0.1
+python-docx==1.1.2
+pdfplumber==0.11.4
+pytesseract==0.3.13
+
+# Data Processing
+pandas==2.2.3
+numpy==2.1.2
+networkx==3.4.2
+
+# Monitoring & Logging
+loguru==0.7.2
+prometheus-client==0.21.0
+
+# Utilities
+python-dotenv==1.0.1
+tenacity==9.0.0
+pyyaml==6.0.2
+schedule==1.2.2
+pytest==8.3.3
+pytest-asyncio==0.24.0

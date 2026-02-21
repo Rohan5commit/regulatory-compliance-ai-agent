@@ -1,0 +1,24 @@
+__pycache__/
+*.py[cod]
+*.so
+*.db
+*.sqlite3
+.env
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+build/
+dist/
+*.egg-info/
+
+# Local data cache
+/data/regulations/*
+!/data/regulations/.gitkeep
+/data/mappings/*
+!/data/mappings/.gitkeep
+/data/audit_logs/*
+!/data/audit_logs/.gitkeep
